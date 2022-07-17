@@ -9,6 +9,8 @@ $(function () {
     })
     // 获取layui的form对象 自定义校验规则
     var form = layui.form
+    // 获取通知对象
+    var layer = layui.layer
     form.verify({
         'pwd': [
           /^[\S]{6,12}$/
@@ -25,4 +27,39 @@ $(function () {
     //         }
     //       }
       })
+    //   监听 注册表单的提交时间
+    $('#form_reg').on('submit',function(e){
+        e.preventDefault()
+        $.post('http://www.liulongbin.top:3007/api/reguser',
+        {username:$('#form_reg [name=username]').val(),password:$('#form_reg [name=password]').val()},
+        function (res) {
+            // 判断结果
+            if (res.status != 0) {
+                return layer.msg(res.message)
+            }
+            // 成功
+            layer.msg('注册成功，请登录！')
+            // 跳转登陆
+            $('#link_login').click()
+        })       
+    }) 
+    // 登陆ajax请求
+    $('#form_login').submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url:'http://www.liulongbin.top:3007/api/login',
+            method:'POST',
+            data:$(this).serialize(),
+            success:function (res) {
+                if (res.status !== 0) {
+                    return layer.msg('登录失败!')
+                }
+                layer.msg('登录成功')
+                //储存返回的token数值
+                localStorage.setItem('token',res.token)
+                // 页面跳转
+                location.href = '/index.html'
+            }
+        })
+    })
 }) 
