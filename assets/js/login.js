@@ -30,7 +30,7 @@ $(function () {
     //   监听 注册表单的提交时间
     $('#form_reg').on('submit',function(e){
         e.preventDefault()
-        $.post('http://www.liulongbin.top:3007/api/reguser',
+        $.post('/api/reguser',
         {username:$('#form_reg [name=username]').val(),password:$('#form_reg [name=password]').val()},
         function (res) {
             // 判断结果
@@ -47,7 +47,7 @@ $(function () {
     $('#form_login').submit(function (e) {
         e.preventDefault();
         $.ajax({
-            url:'http://www.liulongbin.top:3007/api/login',
+            url:'/api/login',
             method:'POST',
             data:$(this).serialize(),
             success:function (res) {
